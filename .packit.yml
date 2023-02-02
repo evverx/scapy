@@ -1,0 +1,41 @@
+---
+# vi:ts=2 sw=2 et:
+#
+# Docs: https://packit.dev/docs/
+
+specfile_path: .packit_rpm/scapy.spec
+files_to_sync:
+  - .packit.yml
+  - src: .packit_rpm/scapy.spec
+    dest: scapy.spec
+upstream_package_name: scapy
+downstream_package_name: scapy
+upstream_tag_template: "v{version}"
+srpm_build_deps: []
+
+actions:
+  post-upstream-clone:
+    # Use the Fedora Rawhide specfile
+    - "git clone https://src.fedoraproject.org/rpms/scapy .packit_rpm --depth=1"
+    # Drop the "sources" file so rebase-helper doesn't think we're a dist-git
+    - "rm -fv .packit_rpm/sources"
+    - "sed -i '/^# check$/a%check\\n./test/run_tests -c test/configs/linux.utsc -K tcpdump -K manufdb -K wireshark -K ci_only -K vcan_socket -K automotive_comm -K imports -K scanner -K netaccess -K root -K tshark -K brotli -K zstd' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: libpcap' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: openssl' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-tox-current-env' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-mock' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-ipython' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-coverage' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-cryptography' .packit_rpm/scapy.spec"
+    - "sed -i '/^BuildArch/aBuildRequires: python3-zstandard' .packit_rpm/scapy.spec"
+    - "sed -i 's/^\\(TOX_PARALLEL_NO_SPINNER=1 tox\\)/\\1 --current-env/' .config/ci/test.sh"
+
+jobs:
+- job: copr_build
+  trigger: pull_request
+  targets:
+  - fedora-37-aarch64
+  - fedora-37-i386
+  - fedora-37-ppc64le
+  - fedora-37-s390x
+  - fedora-37-x86_64
