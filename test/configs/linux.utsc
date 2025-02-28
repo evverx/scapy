@@ -18,7 +18,7 @@
     "test/bpf.uts"
   ],
   "breakfailed": true,
-  "onlyfailed": true,
+  "onlyfailed": false,
   "preexec": {
     "test/contrib/*.uts": "load_contrib(\"%name%\")",
     "test/scapy/layers/tls/*.uts": "load_layer(\"tls\")"
