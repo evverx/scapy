@@ -19,7 +19,7 @@ actions:
     - "rm -fv .packit_rpm/sources"
     # Drop all downstream patches to prevent them from interfering with upstream builds
     - "sed -ri '/^Patch[0-9]+\\:.+\\.patch/d' .packit_rpm/scapy.spec"
-    - "sed -i '/^%check$/apip3 install scapy-rpc\\nOPENSSL_ENABLE_SHA1_SIGNATURES=1 OPENSSL_CONF=$(python3 ./.config/ci/openssl.py) ./test/run_tests -c test/configs/linux.utsc -K ci_only -K netaccess -K scanner' .packit_rpm/scapy.spec"
+    - "sed -i '/^%check$/apip3 install scapy-rpc\\nOPENSSL_ENABLE_SHA1_SIGNATURES=1 OPENSSL_CONF=$(python3 ./.config/ci/openssl.py) ./test/run_tests -c test/configs/linux.utsc -K ci_only -K scanner' .packit_rpm/scapy.spec"
     - "sed -i '/^BuildArch/aBuildRequires: can-utils' .packit_rpm/scapy.spec"
     - "sed -i '/^BuildArch/aBuildRequires: libpcap' .packit_rpm/scapy.spec"
     - "sed -i '/^BuildArch/aBuildRequires: openssl' .packit_rpm/scapy.spec"
@@ -38,7 +38,6 @@ actions:
 jobs:
 - job: copr_build
   trigger: pull_request
-  manual_trigger: true
   enable_net: true
   targets:
   - fedora-latest-stable-aarch64
