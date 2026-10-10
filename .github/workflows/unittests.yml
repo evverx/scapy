@@ -186,6 +186,11 @@ jobs:
       - name: Install Tox and any other packages (win)
         run: ./.config/ci/install.ps1
         if: ${{ contains(matrix.os, 'windows') }}
+      - name: show ifaces
+        run: |
+          ifconfig
+          python3 -c 'from scapy.all import *; print(conf.ifaces); conf.use_bpf = True; print(conf.ifaces)'
+        if: ${{ ! contains(matrix.os, 'windows') }}
       - name: Run Tox (linux/osx)
         run: ./.config/ci/test.sh ${{ matrix.python }} ${{ matrix.mode }}
         env:
