@@ -140,6 +140,11 @@ jobs:
             python: "3.14"
             mode: both
             flags: " -K scanner"
+          - os: macos-15
+            python: "3.14"
+            mode: root
+            installmode: 'libpcap'
+            flags: " -K scanner"
           # windows tests
           - os: windows-latest
             python: "3.14"
