@@ -23,6 +23,7 @@
     "test/contrib/isotp_soft_socket.uts"
   ],
   "onlyfailed": true,
+  "breakfailed": false,
   "extensions": ["scapy-rpc"],
   "preexec": {
     "test/contrib/*.uts": "load_contrib(\"%name%\")",
