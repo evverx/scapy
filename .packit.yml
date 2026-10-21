@@ -40,7 +40,7 @@ actions:
 jobs:
 - job: copr_build
   trigger: pull_request
-  manual_trigger: true
+  manual_trigger: false
   enable_net: true
   targets:
   - fedora-latest-stable-aarch64
